@@ -1,3 +1,5 @@
+package tasks;
+
 public class Task {
 
     protected int id;
@@ -5,15 +7,10 @@ public class Task {
     protected String status;
     protected String description;
 
-    public Task(int id, String name, String status, String description) {
-        this.id = id;
-        this.name = name;
-        this.status = status;
-        this.description = description;
-    }
+
     public Task(String name, String status, String description) {
         this.name = name;
-        this.status = status;
+        this.status = "NEW";
         this.description = description;
     }
 
@@ -65,4 +62,5 @@ public class Task {
                 '}';
     }
 }
+
 
