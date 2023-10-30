@@ -21,8 +21,8 @@ public class Main {
         final int epicId1 = taskManager.createEpic(epic1);
         final int epicId2 = taskManager.createEpic(epic2);
 
-        System.out.println(epic1);
-        System.out.println(epic2);
+        //System.out.println(epic1);
+        //System.out.println(epic2);
 
         Subtask subtask1 = new Subtask("SubTask 1", "///", "Подзадача эпика первая", epicId1);
         Subtask subtask2 = new Subtask("SubTask 2", "///", "Подзадача эпика вторая", epicId1);
