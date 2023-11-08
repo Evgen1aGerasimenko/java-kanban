@@ -1,16 +1,18 @@
 package tasks;
 
+import managers.Status;
+
 public class Task {
 
     protected int id;
     protected String name;
-    protected String status;
+    protected Status status;
     protected String description;
 
 
-    public Task(String name, String status, String description) {
+    public Task(String name, Status status, String description) {
         this.name = name;
-        this.status = "NEW";
+        this.status = status;
         this.description = description;
     }
 
@@ -33,12 +35,12 @@ public class Task {
         this.name = name;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
 
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
 
         this.status = status;
     }
