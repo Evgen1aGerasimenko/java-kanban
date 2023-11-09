@@ -1,6 +1,6 @@
 package managers;
-
 import tasks.Epic;
+import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
@@ -11,7 +11,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    HistoryManager historyManager;
+    protected HistoryManager historyManager;
     private int idGenerator = 0;
 
     public InMemoryTaskManager(HistoryManager historyManager) {

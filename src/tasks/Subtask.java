@@ -1,9 +1,5 @@
 package tasks;
 
-import managers.Status;
-
-import java.util.Objects;
-
 public class Subtask extends Task {
 
     protected int epicId;

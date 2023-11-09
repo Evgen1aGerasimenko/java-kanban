@@ -1,7 +1,5 @@
 package tasks;
 
-import managers.Status;
-
 public class Task {
 
     protected int id;
