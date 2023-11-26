@@ -48,12 +48,15 @@ public class Main {
       taskManager.getSubtask(subtaskId2);
         System.out.println(taskManager.getHistory());
         taskManager.getSubtask(subtaskId2);
+        taskManager.getSubtask(subtaskId3);
+        taskManager.getSubtask(subtaskId1);
         System.out.println(taskManager.getHistory());
         taskManager.getSubtask(subtaskId2);
         System.out.println(taskManager.getHistory());
         taskManager.deleteEpic(epicId2);
+        taskManager.deleteEpic(epicId1);
         System.out.println(taskManager.getHistory());
-        taskManager.clearAllEpics();
-        System.out.println(taskManager.getHistory());
+        //taskManager.clearAllEpics();
+       // System.out.println(taskManager.getHistory());
     }
 }
