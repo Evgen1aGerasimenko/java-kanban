@@ -5,11 +5,14 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) throws ManagerSaveException {
 
-        TaskManager taskManager = Managers.getDefault();
+        File file = new File("src/resources/file.csv");
+        TaskManager taskManager = Managers.getDefault(file);
 
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один");
         Task task2 = new Task("Task 2", Status.NEW, "Таск второй");

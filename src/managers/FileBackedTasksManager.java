@@ -13,63 +13,54 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager {
     public static void main(String[] args) throws ManagerSaveException {
         File file = new File("src/resources/file.csv");
-        FileBackedTasksManager f = new FileBackedTasksManager(file);
+        TaskManager saveManager = Managers.getDefault(file);
 
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один");
         Task task2 = new Task("Task 2", Status.NEW, "Таск второй");
 
-        final int taskId1 = f.createTask(task1);
-        final int taskId2 = f.createTask(task2);
+        final int taskId1 = saveManager.createTask(task1);
+        final int taskId2 = saveManager.createTask(task2);
 
         Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый");
         Epic epic2 = new Epic("Epic 2",Status.NONE, "Эпик второй");
 
-        final int epicId1 = f.createEpic(epic1);
-        final int epicId2 = f.createEpic(epic2);
+        final int epicId1 = saveManager.createEpic(epic1);
+        final int epicId2 = saveManager.createEpic(epic2);
 
         Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", epicId1);
         Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", epicId1);
         Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", epicId1);
 
-        final int subtaskId1 = f.createSubtask(subtask1);
-        final int subtaskId2 = f.createSubtask(subtask2);
-        final int subtaskId3 = f.createSubtask(subtask3);
+        final int subtaskId1 = saveManager.createSubtask(subtask1);
+        final int subtaskId2 = saveManager.createSubtask(subtask2);
+        final int subtaskId3 = saveManager.createSubtask(subtask3);
 
+        saveManager.getTask(taskId2);
+        saveManager.getEpic(epicId2);
+        saveManager.getEpic(epicId1);
+        saveManager.getEpic(epicId2);
+        saveManager.getSubtask(subtaskId2);
+        saveManager.getSubtask(subtaskId2);
+        saveManager.getSubtask(subtaskId3);
+        saveManager.getSubtask(subtaskId1);
+        saveManager.getSubtask(subtaskId2);
+        System.out.println(saveManager.getEpics());
+        System.out.println(saveManager.getEpics());
+        System.out.println(saveManager.getSubtasks());
+        System.out.println(saveManager.getHistory());
+        System.out.println("-----");
 
-        f.getTask(taskId2);
-        System.out.println(f.getHistory());
-        f.getEpic(epicId2);
-        System.out.println(f.getHistory());
-        f.getEpic(epicId1);
-        System.out.println(f.getHistory());
-        f.getEpic(epicId2);
-        System.out.println(f.getHistory());
-        f.getSubtask(subtaskId2);
-        System.out.println(f.getHistory());
-        f.getSubtask(subtaskId2);
-        f.getSubtask(subtaskId3);
-        f.getSubtask(subtaskId1);
-        System.out.println(f.getHistory());
-        f.getSubtask(subtaskId2);
-        System.out.println(f.getHistory());
-        System.out.println(f.tasks);
-        System.out.println(f.epics);
-        System.out.println("----------");
-
-        FileBackedTasksManager fileBackedTasksManager = loadFromFile(file);
-        System.out.println(fileBackedTasksManager.epics);
-        System.out.println(fileBackedTasksManager.tasks);
-        System.out.println(fileBackedTasksManager.subtasks);
+        TaskManager fileBackedTasksManager = loadFromFile(file);
+        
+        System.out.println(fileBackedTasksManager.getEpics());
+        System.out.println(fileBackedTasksManager.getTasks());
+        System.out.println(fileBackedTasksManager.getSubtasks());
         System.out.println(fileBackedTasksManager.getHistory());
 
-        System.out.println(f.tasks.equals(fileBackedTasksManager.tasks));
-        System.out.println(f.subtasks.equals(fileBackedTasksManager.subtasks));
-        System.out.println(f.epics.equals(fileBackedTasksManager.epics));
-        System.out.println(f.getHistory().equals(fileBackedTasksManager.getHistory()));
-        //немного не поняла формулировку о проверке с return 2х, добавила к классы equals,
-        //эпики выдали false, дописала метод fromString в части сабтасков, добавила
-        // Epic epic = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
-        //                epic.getSubtaskId().add(id);
+        System.out.println(saveManager.getTasks().equals(fileBackedTasksManager.getTasks()));
+        System.out.println(saveManager.getSubtasks().equals(fileBackedTasksManager.getSubtasks()));
+        System.out.println(saveManager.getEpics().equals(fileBackedTasksManager.getEpics()));
+        System.out.println(saveManager.getHistory().equals(fileBackedTasksManager.getHistory()));
     }
 
     protected final File file;
