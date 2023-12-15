@@ -1,5 +1,7 @@
 package tasks;
 
+import managers.TaskType;
+
 public class Task {
 
     protected int id;
@@ -49,6 +51,10 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
 

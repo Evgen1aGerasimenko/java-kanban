@@ -1,3 +1,4 @@
+import exceptions.ManagerSaveException;
 import managers.*;
 import tasks.Epic;
 import tasks.Status;
@@ -6,7 +7,7 @@ import tasks.Task;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ManagerSaveException {
 
         TaskManager taskManager = Managers.getDefault();
 
@@ -55,6 +56,7 @@ public class Main {
         System.out.println(taskManager.getHistory());
         taskManager.deleteEpic(epicId2);
         taskManager.deleteEpic(epicId1);
+        System.out.println("----------");
         System.out.println(taskManager.getHistory());
         //taskManager.clearAllEpics();
        // System.out.println(taskManager.getHistory());

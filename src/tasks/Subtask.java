@@ -1,5 +1,7 @@
 package tasks;
 
+import managers.TaskType;
+
 public class Subtask extends Task {
 
     protected int epicId;
@@ -16,5 +18,7 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-
+    public TaskType getType() {
+        return TaskType.SUBTASK;
+    }
 }
