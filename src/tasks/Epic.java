@@ -2,15 +2,19 @@ package tasks;
 
 import managers.TaskType;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskId = new ArrayList<>();
+    protected Instant endTime;
 
-    public Epic(String name, Status status, String description) {
-        super(name, status, description);
+    public Epic(String name, Status status, String description, int duration, Instant startTime, Instant endTime) {
+        super(name, status, description, duration, startTime);
+        this.endTime = endTime;
     }
 
     public ArrayList<Integer> getSubtaskId() {
@@ -37,5 +41,26 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), subtaskId);
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Epic{" +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }

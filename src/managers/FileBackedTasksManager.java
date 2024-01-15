@@ -7,29 +7,30 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
+
     public static void main(String[] args) throws ManagerSaveException {
         File file = new File("src/resources/file.csv");
         TaskManager saveManager = Managers.getDefault(file);
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один");
-        Task task2 = new Task("Task 2", Status.NEW, "Таск второй");
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task2 = new Task("Task 2", Status.NEW, "Таск второй", 10, Instant.now());
 
         final int taskId1 = saveManager.createTask(task1);
         final int taskId2 = saveManager.createTask(task2);
 
-        Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый");
-        Epic epic2 = new Epic("Epic 2",Status.NONE, "Эпик второй");
+        Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый", 10, Instant.now(), Instant.now());
+        Epic epic2 = new Epic("Epic 2",Status.NONE, "Эпик второй", 10, Instant.now(), Instant.now());
 
         final int epicId1 = saveManager.createEpic(epic1);
         final int epicId2 = saveManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", epicId1);
-        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", epicId1);
-        Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now(), epicId1);
+        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 10, Instant.now(), epicId1);
+        Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", 10, Instant.now(), epicId1);
 
         final int subtaskId1 = saveManager.createSubtask(subtask1);
         final int subtaskId2 = saveManager.createSubtask(subtask2);
@@ -70,19 +71,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+
     protected void save() throws ManagerSaveException {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
 
-            bufferedWriter.write("id,type,name,status,description,epic\n");
+            bufferedWriter.write("id,type,name,status,description,duration,startTime,endTime/epic\n");
             for (Task task : getTasks()) {
                 bufferedWriter.write(FormatterUtil.toString(task) + "\n");
             }
             for (Epic epic : getEpics()) {
-                bufferedWriter.write(FormatterUtil.toString(epic) + "\n");
+                bufferedWriter.write(FormatterUtil.toString(epic) + "," + epic.getEndTime() + "\n");
             }
             for (Subtask sub : getSubtasks()) {
-                Subtask subtask = subtasks.get(sub.getId());
-                bufferedWriter.write(FormatterUtil.toString(sub) + "," + subtask.getEpicId() + "\n");
+                bufferedWriter.write(FormatterUtil.toString(sub) + "," + sub.getEpicId() + "\n");
             }
             bufferedWriter.write("\n" + FormatterUtil.historyToString(historyManager));
         } catch (IOException exc) {
@@ -139,7 +140,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public Task getTask(int id) throws ManagerSaveException {
         final Task task = super.getTask(id);
         save();
-        return task;
+         return task;
     }
 
     @Override
@@ -158,20 +159,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public int createTask(Task task) throws ManagerSaveException {
+        super.createTask(task);
         save();
-        return super.createTask(task);
+        return task.getId();
     }
 
     @Override
     public int createSubtask(Subtask subtask) throws ManagerSaveException {
+        super.createSubtask(subtask);
         save();
-        return super.createSubtask(subtask);
+        return subtask.getId();
     }
 
     @Override
     public int createEpic(Epic epic) throws ManagerSaveException {
+        super.createEpic(epic);
         save();
-        return super.createEpic(epic);
+        return epic.getId();
     }
 
     @Override

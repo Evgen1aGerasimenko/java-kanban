@@ -3,7 +3,10 @@ import exceptions.ManagerSaveException;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     List<Task> getTasks();
@@ -26,4 +29,5 @@ public interface TaskManager {
     void clearAllSubtasks() throws ManagerSaveException;
     void clearAllEpics() throws ManagerSaveException;
     List<Task> getHistory();
+    List<Task> getPrioritizedTasks();
 }

@@ -2,6 +2,8 @@ package tasks;
 
 import managers.TaskType;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -10,12 +12,15 @@ public class Task {
     protected String name;
     protected Status status;
     protected String description;
+    protected int duration;
+    protected Instant startTime;
 
-
-    public Task(String name, Status status, String description) {
+    public Task(String name, Status status, String description, int duration, Instant startTime) {
         this.name = name;
         this.status = status;
         this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public int getId() {
@@ -55,20 +60,28 @@ public class Task {
         this.description = description;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
     public TaskType getType() {
         return TaskType.TASK;
     }
 
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status='" + status + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -81,6 +94,18 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                '}';
     }
 }
 

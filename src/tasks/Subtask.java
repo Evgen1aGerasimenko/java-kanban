@@ -2,14 +2,16 @@ package tasks;
 
 import managers.TaskType;
 
+import java.time.Instant;
 import java.util.Objects;
 
 public class Subtask extends Task {
 
     protected int epicId;
 
-    public Subtask(String name, Status status, String description, int epicId) {
-        super(name, status, description);
+
+    public Subtask(String name, Status status, String description, int duration, Instant startTime, int epicId) {
+        super(name, status, description, duration, startTime);
         this.epicId = epicId;
     }
     public int getEpicId() {
@@ -35,5 +37,18 @@ public class Subtask extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), epicId);
+    }
+
+    @Override
+    public String toString() {
+        return "Subtask{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", epicId=" + epicId +
+                '}';
     }
 }
