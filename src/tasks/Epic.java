@@ -2,17 +2,19 @@ package tasks;
 
 import managers.TaskType;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskId = new ArrayList<>();
+    protected LocalDateTime endTime;
 
-    public Epic(String name, Status status, String description, int duration, Instant startTime, Instant endTime) {
-        super(name, status, description, duration, startTime, endTime);
+    public Epic(String name, Status status, String description, int duration, LocalDateTime startTime, LocalDateTime endTime) {
+        super(name, status, description, duration, startTime);
+        this.endTime = endTime;
+
     }
 
     public Epic(String name, String description) {
@@ -45,13 +47,13 @@ public class Epic extends Task {
         return Objects.hash(super.hashCode(), subtaskId);
     }
 
-    public Instant getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-   // public void setEndTime(Instant endTime) {
- //   this.endTime = endTime;
- //   }
+    public void setEndTime(LocalDateTime endTime) {
+    this.endTime = endTime;
+    }
 
 
     @Override

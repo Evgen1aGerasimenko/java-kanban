@@ -14,6 +14,7 @@ import tasks.Task;
 
 import java.io.File;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +31,7 @@ class HistoryManagerTest {
     @Test
     void shouldAddToHistory() throws ManagerSaveException {
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
 
         historyManager.add(task1);
@@ -44,7 +45,7 @@ class HistoryManagerTest {
     void shouldReturnHistory() throws ManagerSaveException {
         assertEquals(Collections.emptyList(), taskManager.getHistory(), "История не пустая");
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
 
         taskManager.getTask(taskId1);
@@ -59,7 +60,7 @@ class HistoryManagerTest {
     @DisplayName("Удаление из истории")
     @Test
     void shouldRemoveFromHistory() throws ManagerSaveException {
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
 
         Epic epic1 = new Epic("Epic 1", "Эпик первый");
@@ -67,7 +68,7 @@ class HistoryManagerTest {
         final int epicId1 = taskManager.createEpic(epic1);
         final int epicId2 = taskManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now().plus(20, ChronoUnit.MINUTES), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, LocalDateTime.now().plus(20, ChronoUnit.MINUTES), epicId1);
         final int subtaskId1 = taskManager.createSubtask(subtask1);
 
         taskManager.getTask(taskId1);

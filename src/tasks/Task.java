@@ -3,6 +3,7 @@ package tasks;
 import managers.TaskType;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -14,29 +15,19 @@ public class Task {
     protected Status status;
     protected String description;
     protected int duration;
-    protected Instant startTime;
-    protected Instant endTime;
+    protected LocalDateTime startTime;
 
-    public Task(String name, Status status, String description, int duration, Instant startTime, Instant endTime) {
+    public Task(String name, Status status, String description, int duration, LocalDateTime startTime) {
         this.name = name;
         this.status = status;
         this.description = description;
         this.duration = duration;
         this.startTime = startTime;
-        this.endTime = getEndTime();
     }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public Task(String name, Status status, String description, int duration, Instant startTime) {
-        this.name = name;
-        this.status = status;
-        this.description = description;
-        this.duration = duration;
-        this.startTime = startTime;
     }
 
     public int getId() {
@@ -84,11 +75,11 @@ public class Task {
         this.duration = duration;
     }
 
-    public Instant getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -96,18 +87,13 @@ public class Task {
         return TaskType.TASK;
     }
 
-    public Instant getEndTime() {
+    public LocalDateTime getEndTime() {
         if(startTime != null) {
             return startTime.plus(duration, ChronoUnit.MINUTES);
         } else {
             return null;
         }
     }
-
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -131,7 +117,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", duration=" + duration +
                 ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 }

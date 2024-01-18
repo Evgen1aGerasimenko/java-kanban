@@ -2,8 +2,7 @@ package tasks;
 
 import managers.TaskType;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -11,15 +10,11 @@ public class Subtask extends Task {
     protected int epicId;
 
 
-    public Subtask(String name, Status status, String description, int duration, Instant startTime, Instant endTime, int epicId) {
-        super(name, status, description, duration, startTime, endTime);
-        this.epicId = epicId;
-    }
-
-    public Subtask(String name, Status status, String description, int duration, Instant startTime, int epicId) {
+    public Subtask(String name, Status status, String description, int duration, LocalDateTime startTime, int epicId) {
         super(name, status, description, duration, startTime);
         this.epicId = epicId;
     }
+
 
     public int getEpicId() {
         return epicId;
@@ -33,11 +28,11 @@ public class Subtask extends Task {
         return TaskType.SUBTASK;
     }
 
-    public Instant getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -64,7 +59,7 @@ public class Subtask extends Task {
                 ", description='" + description + '\'' +
                 ", duration=" + duration +
                 ", startTime=" + startTime +
-                ", endTime=" + endTime +
+                ", endTime=" + getEndTime() +
                 ", epicId=" + epicId +
                 '}';
     }

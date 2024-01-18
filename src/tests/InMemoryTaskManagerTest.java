@@ -12,6 +12,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -53,8 +54,8 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         Epic epic1 = new Epic("Epic 1", "Эпик первый");
         final int epicId1 = taskManager.createEpic(epic1);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.NEW, "Подзадача эпика первая", 10, Instant.now(), epicId1);
-        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 10, Instant.now().plus(40, ChronoUnit.MINUTES), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.NEW, "Подзадача эпика первая", 10, LocalDateTime.now(), epicId1);
+        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 10, LocalDateTime.now().plus(40, ChronoUnit.MINUTES), epicId1);
 
         final int subtaskId1 = taskManager.createSubtask(subtask1);
         final int subtaskId2 = taskManager.createSubtask(subtask2);

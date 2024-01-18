@@ -10,7 +10,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.File;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
@@ -36,7 +36,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         assertTrue(taskManager.getEpics().isEmpty(), "Список содержит эпики");
         assertTrue(taskManager.getSubtasks().isEmpty(), "Список содержит сабтаски");
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
 
         Epic epic1 = new Epic("Epic 1", "Эпик первый");
@@ -44,7 +44,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         Epic epic2 = new Epic("Epic 1","Эпик без подзадач");
         final int epicId2 = taskManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now().plus(20, ChronoUnit.MINUTES), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, LocalDateTime.now().plus(20, ChronoUnit.MINUTES), epicId1);
         final int subtaskId1 = taskManager.createSubtask(subtask1);
 
         assertFalse(taskManager.getTasks().isEmpty(), "Список не содержит таски");
@@ -64,7 +64,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         File file = new File("src/resources/file.csv");
         taskManager = new FileBackedTasksManager(file);
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
 
         Epic epic1 = new Epic("Epic 1", "Эпик первый");
@@ -72,7 +72,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         Epic epic2 = new Epic("Epic 1", "Эпик без подзадач");
         final int epicId2 = taskManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now().plus(20, ChronoUnit.MINUTES), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, LocalDateTime.now().plus(20, ChronoUnit.MINUTES), epicId1);
         final int subtaskId1 = taskManager.createSubtask(subtask1);
 
         TaskManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);

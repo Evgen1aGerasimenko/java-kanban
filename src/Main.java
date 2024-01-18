@@ -7,6 +7,7 @@ import tasks.Task;
 
 import java.io.File;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -15,8 +16,8 @@ public class Main {
         File file = new File("src/resources/file.csv");
         TaskManager taskManager = Managers.getDefault(file);
 
-        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 1, Instant.now().plusSeconds(120));
-        Task task2 = new Task("Task 2", Status.NEW, "Таск второй",1, Instant.now().plusSeconds(40));
+        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 1, LocalDateTime.now().plusSeconds(120));
+        Task task2 = new Task("Task 2", Status.NEW, "Таск второй",1, LocalDateTime.now().plusSeconds(40));
 
        final int taskId1 = taskManager.createTask(task1);
        final int taskId2 = taskManager.createTask(task2);
@@ -28,7 +29,7 @@ public class Main {
         final int epicId2 = taskManager.createEpic(epic2);
 
         Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 1, null, epicId1);
-        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 1, Instant.now().plusSeconds(200), epicId1);
+        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 1, LocalDateTime.now().plusSeconds(200), epicId1);
         Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", 1, null, epicId1);
 
         final int subtaskId1 = taskManager.createSubtask(subtask1);

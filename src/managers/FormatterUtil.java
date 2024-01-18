@@ -7,7 +7,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,29 +30,29 @@ public class FormatterUtil {
         }
         String description = values[4];
         final int duration = Integer.parseInt(values[5]);
-        Instant startTime;
-        Instant endTime;
+        LocalDateTime startTime;
+        LocalDateTime endTime;
         if(values[6].equals("null")){
             startTime = null;
-        }else {
-            startTime = Instant.parse(values[6]);
+        } else {
+            startTime = LocalDateTime.parse(values[6]);
         }
         if(values[7].equals("null")){
             endTime = null;
         }else {
-            endTime = Instant.parse(values[7]);
+            endTime = LocalDateTime.parse(values[7]);
         }
 
         Task task;
         switch (taskType) {
             case TASK:
-                task = new Task(name, status, description, duration, startTime, endTime);
+                task = new Task(name, status, description, duration, startTime);
                 task.setId(id);
                 fileBackedTasksManager.tasks.put(id, task);
                 return task;
             case SUBTASK:
                 final int EpicId = Integer.parseInt(values[8]);
-                task = new Subtask(name, status, description, duration, startTime, endTime, EpicId);
+                task = new Subtask(name, status, description, duration, startTime, EpicId);
                 task.setId(id);
                 Epic epic = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
                 epic.getSubtaskId().add(id);
@@ -61,7 +61,7 @@ public class FormatterUtil {
             case EPIC:
                 task = new Epic(name, status, description, duration, startTime, endTime);
                 task.setId(id);
-                task.setEndTime(endTime);
+                ((Epic) task).setEndTime(endTime);
                 fileBackedTasksManager.epics.put(id, (Epic) task);
                 return task;
         }

@@ -8,6 +8,7 @@ import tasks.Task;
 
 import java.io.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         final int epicId1 = saveManager.createEpic(epic1);
         final int epicId2 = saveManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now(), epicId1);
-        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 10, Instant.now().plus(20, ChronoUnit.MINUTES), epicId1);
-        Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", 10, Instant.now().plus(40,ChronoUnit.MINUTES), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, LocalDateTime.now(), epicId1);
+        Subtask subtask2 = new Subtask("SubTask 2", Status.NEW, "Подзадача эпика вторая", 10, LocalDateTime.now().plus(20, ChronoUnit.MINUTES), epicId1);
+        Subtask subtask3 = new Subtask("SubTask 3", Status.NEW, "Первая подзадача второго эпика", 10, LocalDateTime.now().plus(40,ChronoUnit.MINUTES), epicId1);
 
         final int subtaskId1 = saveManager.createSubtask(subtask1);
         final int subtaskId2 = saveManager.createSubtask(subtask2);
