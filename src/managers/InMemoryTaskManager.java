@@ -5,6 +5,7 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -114,7 +115,7 @@ public class InMemoryTaskManager implements TaskManager {
         add(task);
     }
     @Override
-    public void updateSubtask(Subtask subtask) {
+    public void updateSubtask(Subtask subtask) throws ManagerSaveException {
         Subtask subtaskUpdate = subtasks.get(subtask.getId());
         prioritizedTasks.remove(subtask);
         subtaskUpdate.setName(subtask.getName());
@@ -124,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
     @Override
-    public void updateEpic(Epic epic) {
+    public void updateEpic(Epic epic) throws ManagerSaveException {
 
         Epic epicUpdate = epics.get(epic.getId());
         calculateStatus(epic.getId());
@@ -142,8 +143,8 @@ public class InMemoryTaskManager implements TaskManager {
                     epic.setStartTime(subtask.getStartTime());
                 }
 
-                if (epic.getEndTime() == null || subtask.getStartTime().plusSeconds(subtask.getDuration()).isAfter(epic.getEndTime())) {
-                    epicUpdate.setEndTime(subtask.getStartTime().plusSeconds(subtask.getDuration()));
+                if (epic.getEndTime() == null || subtask.getStartTime().plus(subtask.getDuration(), ChronoUnit.MINUTES).isAfter(epic.getEndTime())) {
+                    epicUpdate.setEndTime(subtask.getStartTime().plus(subtask.getDuration(), ChronoUnit.MINUTES));
                 }
             }
             newEpicDuration += subtask.getDuration();
@@ -284,8 +285,7 @@ public class InMemoryTaskManager implements TaskManager {
 
             if (task1.getStartTime() != null) {
                 if (task1.getStartTime().equals(task.getStartTime()) ||
-                        (task1.getStartTime().isAfter(task.getStartTime().plusSeconds(task.getDuration())) &&
-                                task1.getStartTime().plusSeconds(task1.getDuration()).isBefore(task.getStartTime()))) {
+                        (task1.getStartTime().isBefore(task.getEndTime()) && task1.getEndTime().isAfter(task.getStartTime()))) {
 
                     System.out.println("Пересечение задач по времни");
                     return;

@@ -10,11 +10,13 @@ import java.util.Objects;
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskId = new ArrayList<>();
-    protected Instant endTime;
 
     public Epic(String name, Status status, String description, int duration, Instant startTime, Instant endTime) {
-        super(name, status, description, duration, startTime);
-        this.endTime = endTime;
+        super(name, status, description, duration, startTime, endTime);
+    }
+
+    public Epic(String name, String description) {
+        super(name, description);
     }
 
     public ArrayList<Integer> getSubtaskId() {
@@ -47,9 +49,10 @@ public class Epic extends Task {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
+   // public void setEndTime(Instant endTime) {
+ //   this.endTime = endTime;
+ //   }
+
 
     @Override
     public String toString() {

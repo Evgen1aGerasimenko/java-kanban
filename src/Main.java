@@ -21,8 +21,8 @@ public class Main {
        final int taskId1 = taskManager.createTask(task1);
        final int taskId2 = taskManager.createTask(task2);
 
-        Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый", 1, Instant.now().plusSeconds(60), null);
-        Epic epic2 = new Epic("Epic 2",Status.NONE, "Эпик второй", 1, Instant.now().plusSeconds(80), Instant.now().plusSeconds(20));
+        Epic epic1 = new Epic("Epic 1","Эпик первый");
+        Epic epic2 = new Epic("Epic 2", "Эпик второй");
 
         final int epicId1 = taskManager.createEpic(epic1);
         final int epicId2 = taskManager.createEpic(epic2);

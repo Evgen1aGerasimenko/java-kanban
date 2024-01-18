@@ -20,8 +20,8 @@ public interface TaskManager {
     int createSubtask(Subtask subtask) throws ManagerSaveException;
     int createEpic(Epic epic) throws ManagerSaveException;
     void updateTask(Task task);
-    void updateSubtask(Subtask subtask);
-    void updateEpic(Epic epic);
+    void updateSubtask(Subtask subtask) throws ManagerSaveException;
+    void updateEpic(Epic epic) throws ManagerSaveException;
     void deleteTask(int id) throws ManagerSaveException;
     void deleteSubtask(int id) throws ManagerSaveException;
     void deleteEpic(int id) throws ManagerSaveException;

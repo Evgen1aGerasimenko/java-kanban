@@ -1,7 +1,9 @@
-id,type,name,status,description,duration,startTime,endTime/epic
-1,TASK,Task 1,NEW,Таск номер один,10,2024-01-15T22:28:34.321034Z
-2,EPIC,Epic 1,DONE,Эпик первый,10,2024-01-15T22:28:34.321222Z,2024-01-15T22:28:44.321498Z
-3,EPIC,Epic 1,NONE,Эпик без подзадач,10,2024-01-15T22:28:34.321344Z,2024-01-15T22:28:34.321345Z
-4,SUBTASK,SubTask 1,DONE,Подзадача эпика первая,10,2024-01-15T22:28:34.321498Z,2
+id,type,name,status,description,duration,startTime,endTime,epic
+1,TASK,Task 1,NEW,Таск номер один,1,2024-01-18T05:54:49.292146Z,2024-01-18T05:55:49.292146Z
+2,TASK,Task 2,NEW,Таск второй,1,2024-01-18T05:53:29.292174Z,2024-01-18T05:54:29.292174Z
+3,EPIC,Epic 1,IN_PROGRESS,Эпик первый,3,2024-01-18T05:56:09.419990Z,2024-01-18T05:57:09.419990Z
+4,EPIC,Epic 2,null,Эпик второй,0,null,null
+5,SUBTASK,SubTask 1,DONE,Подзадача эпика первая,1,null,null,3
+6,SUBTASK,SubTask 2,NEW,Подзадача эпика вторая,1,2024-01-18T05:56:09.419990Z,2024-01-18T05:57:09.419990Z,3
+7,SUBTASK,SubTask 3,NEW,Первая подзадача второго эпика,1,null,null,3
 
-3,2

@@ -14,6 +14,7 @@ import tasks.Task;
 
 import java.io.File;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,12 +62,12 @@ class HistoryManagerTest {
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, Instant.now());
         final int taskId1 = taskManager.createTask(task1);
 
-        Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый", 10, Instant.now(), null);
-        Epic epic2 = new Epic("Epic 2",Status.NONE, "Эпик второй", 10, Instant.now(), null);
+        Epic epic1 = new Epic("Epic 1", "Эпик первый");
+        Epic epic2 = new Epic("Epic 2", "Эпик второй");
         final int epicId1 = taskManager.createEpic(epic1);
         final int epicId2 = taskManager.createEpic(epic2);
 
-        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now(), epicId1);
+        Subtask subtask1 = new Subtask("SubTask 1", Status.DONE, "Подзадача эпика первая", 10, Instant.now().plus(20, ChronoUnit.MINUTES), epicId1);
         final int subtaskId1 = taskManager.createSubtask(subtask1);
 
         taskManager.getTask(taskId1);

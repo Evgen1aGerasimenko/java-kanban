@@ -13,7 +13,8 @@ import java.util.List;
 
 public class FormatterUtil {
     public static String toString(Task task) {
-        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "," + task.getDuration() + "," + task.getStartTime();
+        return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() +
+                "," + task.getDescription() + "," + task.getDuration() + "," + task.getStartTime() + "," + task.getEndTime();
     }
 
     protected static Task fromString(String value, FileBackedTasksManager fileBackedTasksManager) {
@@ -21,30 +22,46 @@ public class FormatterUtil {
         TaskType taskType = TaskType.valueOf(values[1]);
         final int id = Integer.parseInt(values[0]);
         String name = values[2];
-        Status status = Status.valueOf(values[3]);
+        Status status;
+        if(values[3].equals("null")){
+            status = null;
+        } else {
+            status = Status.valueOf(values[3]);
+        }
         String description = values[4];
         final int duration = Integer.parseInt(values[5]);
-        Instant startTime = Instant.parse(values[6]);
+        Instant startTime;
+        Instant endTime;
+        if(values[6].equals("null")){
+            startTime = null;
+        }else {
+            startTime = Instant.parse(values[6]);
+        }
+        if(values[7].equals("null")){
+            endTime = null;
+        }else {
+            endTime = Instant.parse(values[7]);
+        }
 
         Task task;
         switch (taskType) {
             case TASK:
-                task = new Task(name, status, description, duration, startTime);
+                task = new Task(name, status, description, duration, startTime, endTime);
                 task.setId(id);
                 fileBackedTasksManager.tasks.put(id, task);
                 return task;
             case SUBTASK:
-                final int EpicId = Integer.parseInt(values[7]);
-                task = new Subtask(name, status, description, duration, startTime, EpicId);
+                final int EpicId = Integer.parseInt(values[8]);
+                task = new Subtask(name, status, description, duration, startTime, endTime, EpicId);
                 task.setId(id);
                 Epic epic = fileBackedTasksManager.epics.get(((Subtask) task).getEpicId());
                 epic.getSubtaskId().add(id);
                 fileBackedTasksManager.subtasks.put(id, (Subtask) task);
                 return task;
             case EPIC:
-                Instant endTime = Instant.parse(values[7]);
                 task = new Epic(name, status, description, duration, startTime, endTime);
                 task.setId(id);
+                task.setEndTime(endTime);
                 fileBackedTasksManager.epics.put(id, (Epic) task);
                 return task;
         }

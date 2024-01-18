@@ -4,6 +4,7 @@ import managers.TaskType;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Task {
@@ -14,6 +15,21 @@ public class Task {
     protected String description;
     protected int duration;
     protected Instant startTime;
+    protected Instant endTime;
+
+    public Task(String name, Status status, String description, int duration, Instant startTime, Instant endTime) {
+        this.name = name;
+        this.status = status;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = getEndTime();
+    }
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Task(String name, Status status, String description, int duration, Instant startTime) {
         this.name = name;
@@ -80,7 +96,17 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public Instant getEndTime() {
+        if(startTime != null) {
+            return startTime.plus(duration, ChronoUnit.MINUTES);
+        } else {
+            return null;
+        }
+    }
 
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
 
 
     @Override
@@ -105,6 +131,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", duration=" + duration +
                 ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 }
