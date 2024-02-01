@@ -1,26 +1,19 @@
 
-import com.google.gson.Gson;
 import exceptions.ManagerSaveException;
 import managers.*;
-import server.HttpTaskServer;
 import server.KVServer;
-import server.KVTaskClient;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-
 public class Main {
 
     public static void main(String[] args) throws IOException, ManagerSaveException {
 
         new KVServer().start();
-        Gson gson = Managers.getGson();
         TaskManager taskManager = Managers.getDefault();
 
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 1, LocalDateTime.now().plusSeconds(120));
@@ -43,10 +36,6 @@ public class Main {
         final int subtaskId1 = taskManager.createSubtask(subtask1);
         final int subtaskId2 = taskManager.createSubtask(subtask2);
         final int subtaskId3 = taskManager.createSubtask(subtask3);
-
-        System.out.println(taskManager.getSubtask(subtaskId1));
-        System.out.println(taskManager.getSubtasks());
-        System.out.println(taskManager.getHistory());
 
     }
 }

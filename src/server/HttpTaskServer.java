@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import exceptions.ManagerSaveException;
@@ -20,11 +21,11 @@ public class HttpTaskServer {
     protected TaskManager taskManager;
     protected HttpServer server;
     public static final int PORT = 8080;
-    Gson gson;
+    protected final Gson gson;
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
-        gson = Managers.getGson();
+        gson = getGson();
         server = HttpServer.create();
         server.bind(new InetSocketAddress("localhost", PORT), 0);
         server.createContext("/tasks", this::handler);
@@ -46,44 +47,17 @@ public class HttpTaskServer {
                     handleEpic(h);
                     break;
                 case "/subtask/epic":
-                    if (!h.getRequestMethod().equals("GET")) {
-                        System.out.println("/subtask/epic ждет GET-запроос, а получил: " + h.getRequestMethod());
-                        h.sendResponseHeaders(405, 0);
-                    }
-
-                    final String query = h.getRequestURI().getQuery();
-                    final int id = Integer.parseInt(query);
-                    final List<Subtask> subtasks = taskManager.getSubtasksOfTasks(id);
-                    final String response = gson.toJson(subtasks);
-                    System.out.println("Получены подзадачи ээпика с идентификатором " + id);
-                    sendText(h, response);
+                   handleEpicsSubtasks(h);
                     break;
                 case "/prioritized":
-                    if (!h.getRequestMethod().equals("GET")) {
-                        h.sendResponseHeaders(405, 0);
-                    }
-                    final String responsePrioritized = gson.toJson(taskManager.getPrioritizedTasks());
-                    sendText(h, responsePrioritized);
+                    handlePrioritized(h);
                     break;
                 case "/":
-                    if (!h.getRequestMethod().equals("GET")) {
-                        h.sendResponseHeaders(405, 0);
-                    }
-                    final String responseAllTasks = gson.toJson(taskManager.getTasks());
-                    final String responseAllSubtasks = gson.toJson(taskManager.getSubtasks());
-                    final String responseAllEpics = gson.toJson(taskManager.getEpics());
-
-                    sendText(h, responseAllTasks);
-                    sendText(h, responseAllSubtasks);
-                    sendText(h, responseAllEpics);
+                    handleAllTasks(h);
                     break;
 
                 case "/history":
-                    if (!h.getRequestMethod().equals("GET")) {
-                        h.sendResponseHeaders(405, 0);
-                    }
-                    final String responseHistory = gson.toJson(taskManager.getHistory());
-                    sendText(h, responseHistory);
+                    handleHistory(h);
                     break;
                 default:
                     System.out.println("Неизвестный запрос: " + h.getRequestURI());
@@ -104,6 +78,54 @@ public class HttpTaskServer {
         h.getResponseHeaders().add("Content-Type", "application/json");
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
+    }
+
+    protected static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        return gsonBuilder.create();
+    }
+
+    private void handleEpicsSubtasks(HttpExchange h) throws IOException {
+        if (!h.getRequestMethod().equals("GET")) {
+            System.out.println("/subtask/epic ждет GET-запроос, а получил: " + h.getRequestMethod());
+            h.sendResponseHeaders(405, 0);
+        }
+
+        final String query = h.getRequestURI().getQuery();
+        final int id = Integer.parseInt(query);
+        final List<Subtask> subtasks = taskManager.getSubtasksOfTasks(id);
+        final String response = gson.toJson(subtasks);
+        System.out.println("Получены подзадачи эпика с идентификатором " + id);
+        sendText(h, response);
+    }
+
+    private void handlePrioritized(HttpExchange h) throws IOException {
+        if (!h.getRequestMethod().equals("GET")) {
+            h.sendResponseHeaders(405, 0);
+        }
+        final String responsePrioritized = gson.toJson(taskManager.getPrioritizedTasks());
+        sendText(h, responsePrioritized);
+    }
+
+    private void handleAllTasks(HttpExchange h) throws IOException {
+        if (!h.getRequestMethod().equals("GET")) {
+            h.sendResponseHeaders(405, 0);
+        }
+        final String responseAllTasks = gson.toJson(taskManager.getTasks());
+        final String responseAllSubtasks = gson.toJson(taskManager.getSubtasks());
+        final String responseAllEpics = gson.toJson(taskManager.getEpics());
+
+        sendText(h, responseAllTasks);
+        sendText(h, responseAllSubtasks);
+        sendText(h, responseAllEpics);
+    }
+
+    private void handleHistory(HttpExchange h) throws IOException {
+        if (!h.getRequestMethod().equals("GET")) {
+            h.sendResponseHeaders(405, 0);
+        }
+        final String responseHistory = gson.toJson(taskManager.getHistory());
+        sendText(h, responseHistory);
     }
 
     private void handleTask(HttpExchange h) throws IOException, ManagerSaveException {

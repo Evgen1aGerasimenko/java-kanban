@@ -18,10 +18,7 @@ public class Managers {
         return new InMemoryHistoryManager();
     }
 
-    public static Gson getGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        return gsonBuilder.create();
-    }
+
     public static  TaskManager getDefaultFileBackedManager(File file) {
         return new FileBackedTasksManager(file);
     }

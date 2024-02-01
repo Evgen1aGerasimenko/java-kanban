@@ -1,6 +1,7 @@
 package tests;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import exceptions.ManagerSaveException;
 import managers.*;
@@ -31,7 +32,11 @@ public class HttpTaskServerTest {
     private Task task;
     private Subtask subtask;
     private Epic epic;
-    Gson gson = Managers.getGson();
+    Gson gson = getGson();
+    private static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        return gsonBuilder.create();
+    }
 
     @BeforeEach
     public void beforeEach() throws IOException, ManagerSaveException {
@@ -429,6 +434,22 @@ public class HttpTaskServerTest {
         final List<Task> history = gson.fromJson(response.body(), new TypeToken<ArrayList<Task>>(){}.getType());
         assertNotNull(history, "Список пуст");
         assertEquals(2, history.size(), "Количество задач не соответсвует ожидаемому");
+
+    }
+
+    @DisplayName("Получаем подзадачи эпика")
+    @Test
+    void shouldReturnEpicsSubtasks() throws IOException, InterruptedException, ManagerSaveException {
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/subtask/epic?2");
+        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+
+        final List<Subtask> epicsSubtasks = gson.fromJson(response.body(), new TypeToken<ArrayList<Subtask>>(){}.getType());
+        assertNotNull(epicsSubtasks, "Список пуст");
+        assertEquals(1, epicsSubtasks.size(), "Количество подзадач не соответсвует ожидаемому");
 
     }
 }

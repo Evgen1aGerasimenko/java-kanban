@@ -1,6 +1,7 @@
 package managers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class HttpTaskManager extends FileBackedTasksManager {
 
     protected KVTaskClient client;
-    protected final Gson gson = Managers.getGson();
+    protected final Gson gson = getGson();
     public HttpTaskManager(int port, boolean load) throws IOException, ManagerSaveException {
         super(null);
         this.client = new KVTaskClient(port);
@@ -28,6 +29,10 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
     public HttpTaskManager(int port) throws IOException, ManagerSaveException {
         this(port, false);
+    }
+    protected static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        return gsonBuilder.create();
     }
 
 
