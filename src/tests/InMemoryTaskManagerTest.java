@@ -11,6 +11,7 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,7 +24,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
 
     @BeforeEach
-    public void beforeEach() throws ManagerSaveException {
+    public void beforeEach() {
         taskManager = new InMemoryTaskManager(new EmptyHistoryManager());
     }
 
@@ -47,7 +48,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @DisplayName("Расчет статуса эпика")
     @Test
-    void shouldCalculateEpicsStatus() throws ManagerSaveException {
+    void shouldCalculateEpicsStatus() throws IOException, ManagerSaveException {
 
         assertTrue(taskManager.getEpics().isEmpty(), "Список эпиков не пуст");
 

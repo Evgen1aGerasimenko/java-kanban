@@ -6,6 +6,7 @@ import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class FormatterUtil {
         return sb.toString();
     }
 
-    protected static List<Integer> historyFromString(String value, FileBackedTasksManager fileBackedTasksManager) throws ManagerSaveException {
+    protected static List<Integer> historyFromString(String value, FileBackedTasksManager fileBackedTasksManager) throws IOException, ManagerSaveException {
         final String[] idList = value.split(",");
         List<Integer> history = new ArrayList<>();
         for (String id : idList) {

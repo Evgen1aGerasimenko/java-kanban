@@ -14,9 +14,9 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    public static void main(String[] args) throws ManagerSaveException {
+    public static void main(String[] args) throws IOException, ManagerSaveException {
         File file = new File("src/resources/file.csv");
-        TaskManager saveManager = Managers.getDefault(file);
+        TaskManager saveManager = Managers.getDefaultFileBackedManager(file);
 
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, null);
         Task task2 = new Task("Task 2", Status.NEW, "Таск второй", 10, null);
@@ -66,7 +66,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     }
 
-    protected final File file;
+    protected File file;
 
     public FileBackedTasksManager(File file) {
         super(new InMemoryHistoryManager());
@@ -94,7 +94,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+    public static FileBackedTasksManager loadFromFile(File file) throws IOException, ManagerSaveException {
         FileBackedTasksManager taskManager = new FileBackedTasksManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             br.readLine();
@@ -112,121 +112,124 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException exc) {
-            throw new ManagerSaveException("Произошла ошибка во время чтения файла.");
+            System.out.println("Произошла ошибка во время чтения файла.");
         }
         return taskManager;
     }
 
 
     @Override
-    public List<Task> getTasks() {
+    public List<Task> getTasks() throws IOException {
         return super.getTasks();
     }
 
     @Override
-    public List<Subtask> getSubtasks() {
+    public List<Subtask> getSubtasks() throws IOException {
         return super.getSubtasks();
     }
 
     @Override
-    public List<Epic> getEpics() {
+    public List<Epic> getEpics() throws IOException {
         return super.getEpics();
     }
 
     @Override
-    public List<Subtask> getSubtasksOfTasks(int epicId) {
+    public List<Subtask> getSubtasksOfTasks(int epicId) throws IOException {
         return super.getSubtasksOfTasks(epicId);
     }
 
     @Override
-    public Task getTask(int id) throws ManagerSaveException {
+    public Task getTask(int id) throws IOException, ManagerSaveException {
         final Task task = super.getTask(id);
         save();
-         return task;
+        return task;
     }
 
     @Override
-    public Subtask getSubtask(int id) throws ManagerSaveException {
+    public Subtask getSubtask(int id) throws IOException, ManagerSaveException {
         final Subtask subtask = super.getSubtask(id);
         save();
         return subtask;
     }
 
     @Override
-    public Epic getEpic(int id) throws ManagerSaveException {
+    public Epic getEpic(int id) throws IOException, ManagerSaveException {
         final Epic epic = super.getEpic(id);
         save();
         return epic;
     }
 
     @Override
-    public int createTask(Task task) throws ManagerSaveException {
+    public int createTask(Task task) throws IOException, ManagerSaveException {
         super.createTask(task);
-        save();
+            save();
         return task.getId();
     }
 
     @Override
-    public int createSubtask(Subtask subtask) throws ManagerSaveException {
+    public int createSubtask(Subtask subtask) throws IOException, ManagerSaveException {
         super.createSubtask(subtask);
-        save();
+            save();
         return subtask.getId();
     }
 
     @Override
-    public int createEpic(Epic epic) throws ManagerSaveException {
+    public int createEpic(Epic epic) throws IOException, ManagerSaveException {
         super.createEpic(epic);
         save();
         return epic.getId();
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IOException, ManagerSaveException {
         super.updateTask(task);
+        save();
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) throws ManagerSaveException {
+    public void updateSubtask(Subtask subtask) throws IOException, ManagerSaveException {
         super.updateSubtask(subtask);
+        save();
     }
 
     @Override
-    public void updateEpic(Epic epic) throws ManagerSaveException {
+    public void updateEpic(Epic epic) throws IOException, ManagerSaveException {
         super.updateEpic(epic);
+        save();
     }
 
     @Override
-    public void deleteTask(int id) throws ManagerSaveException {
+    public void deleteTask(int id) throws IOException, ManagerSaveException {
         super.deleteTask(id);
         save();
     }
 
     @Override
-    public void deleteSubtask(int id) throws ManagerSaveException {
+    public void deleteSubtask(int id) throws IOException, ManagerSaveException {
         super.deleteSubtask(id);
         save();
     }
 
     @Override
-    public void deleteEpic(int id) throws ManagerSaveException {
+    public void deleteEpic(int id) throws IOException, ManagerSaveException {
         super.deleteEpic(id);
         save();
     }
 
     @Override
-    public void clearAllTasks() throws ManagerSaveException {
+    public void clearAllTasks() throws IOException, ManagerSaveException {
         super.clearAllTasks();
         save();
     }
 
     @Override
-    public void clearAllSubtasks() throws ManagerSaveException {
+    public void clearAllSubtasks() throws IOException, ManagerSaveException {
         super.clearAllSubtasks();
         save();
     }
 
     @Override
-    public void clearAllEpics() throws ManagerSaveException {
+    public void clearAllEpics() throws IOException, ManagerSaveException {
         super.clearAllEpics();
         save();
     }

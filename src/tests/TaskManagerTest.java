@@ -7,6 +7,8 @@ import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     T taskManager;
 
-   public void init() throws ManagerSaveException {
+   public void init() throws IOException, ManagerSaveException {
 
        Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 1, LocalDateTime.now().plusSeconds(120));
        Task task2 = new Task("Task 2", Status.NEW, "Таск второй",1, LocalDateTime.now().plusSeconds(40));
@@ -44,7 +46,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем список задач")
     @Test
-    void shouldReturnListOfTasks() throws ManagerSaveException {
+    void shouldReturnListOfTasks() throws IOException, ManagerSaveException {
         assertEquals(Collections.emptyList(), taskManager.getTasks(), "Список задач не пуст");
         init();
         final List<Task> tasks = taskManager.getTasks();
@@ -56,7 +58,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем список подзадач")
     @Test
-    void shouldReturnListOfSubtasks() throws ManagerSaveException {
+    void shouldReturnListOfSubtasks() throws IOException, ManagerSaveException {
         assertEquals(Collections.emptyList(), taskManager.getSubtasks(), "Список подзадач не пуст");
         init();
         final List<Subtask> subtasks = taskManager.getSubtasks();
@@ -68,7 +70,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем список эпиков")
     @Test
-    void shouldReturnListOfEpics() throws ManagerSaveException {
+    void shouldReturnListOfEpics() throws IOException, ManagerSaveException {
         assertEquals(Collections.emptyList(), taskManager.getEpics(), "Список эпиков не пуст");
         init();
         final List<Epic> epics = taskManager.getEpics();
@@ -80,7 +82,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем подзадачи эпика по идентификатору")
     @Test
-    void shouldReturnSubtaskByEpicId() throws ManagerSaveException {
+    void shouldReturnSubtaskByEpicId() throws IOException, ManagerSaveException {
        assertTrue(taskManager.getSubtasks().isEmpty(), "Список подзадач не пуст");
 
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
@@ -109,7 +111,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем задачу по идентификатору, добавляем в историю просмотров")
     @Test
-    void shouldReturnTaskById() throws ManagerSaveException {
+    void shouldReturnTaskById() throws IOException, ManagerSaveException {
 
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
@@ -122,7 +124,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем подзадачу по идентификатору, добавляем в историю просмотров")
     @Test
-    void shouldReturnSubtaskById() throws ManagerSaveException {
+    void shouldReturnSubtaskById() throws IOException, ManagerSaveException {
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
         final int epicId = taskManager.createEpic(epic);
 
@@ -136,7 +138,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получаем эпик по идентификатору, добавляем в историю просмотров")
     @Test
-    void shouldReturnEpicById() throws ManagerSaveException {
+    void shouldReturnEpicById() throws IOException, ManagerSaveException {
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
         final int epicId = taskManager.createEpic(epic);
 
@@ -147,7 +149,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Создаем таску")
     @Test
-    void shouldCreateTask() throws ManagerSaveException {
+    void shouldCreateTask() throws IOException, ManagerSaveException {
         Task task = new Task("TaskTest", Status.NEW, "Task create test", 10, LocalDateTime.now());
         final int taskId = taskManager.createTask(task);
 
@@ -167,7 +169,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Создаем сабтаск")
     @Test
-    void shouldCreateSubtask() throws ManagerSaveException {
+    void shouldCreateSubtask() throws IOException, ManagerSaveException {
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
         final int epicId = taskManager.createEpic(epic);
         Subtask subtask = new Subtask("SubtaskTest", Status.NEW, "Subtask create test", 10, LocalDateTime.now(), epicId);
@@ -191,7 +193,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Создаем эпик")
     @Test
-    void shouldCreateEpic() throws ManagerSaveException {
+    void shouldCreateEpic() throws IOException, ManagerSaveException {
         Epic epic = new Epic("EpicTest", "Epic create test");
         final int epicId = taskManager.createEpic(epic);
 
@@ -219,7 +221,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Обновление задачи")
     @Test
-    void shouldUpdateTask() throws ManagerSaveException {
+    void shouldUpdateTask() throws IOException, ManagerSaveException {
         Task task = new Task("TaskTest", Status.NEW, "Task create test", 10, LocalDateTime.now());
         final int taskId = taskManager.createTask(task);
 
@@ -245,7 +247,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Обновление времени начала, завершения и длительности эпика")
     @Test
-    void shouldUpdateEpicsStartAndEnDTimePlusDuration() throws ManagerSaveException {
+    void shouldUpdateEpicsStartAndEnDTimePlusDuration() throws IOException, ManagerSaveException {
         Epic epic1 = new Epic("Epic 1", "Эпик первый");
         final int epicId1 = taskManager.createEpic(epic1);
 
@@ -267,7 +269,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Обновление подзадачи")
     @Test
-    void shouldUpdateSubtask() throws ManagerSaveException {
+    void shouldUpdateSubtask() throws IOException, ManagerSaveException {
         Epic epic1 = new Epic("Epic 1", Status.NONE, "Эпик первый", 1, null, null);
         final int epicId1 = taskManager.createEpic(epic1);
 
@@ -300,7 +302,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Удаление задачи по идентификатору")
     @Test
-    void shouldDeleteTaskById() throws ManagerSaveException {
+    void shouldDeleteTaskById() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getTasks().isEmpty(), "Список не пуст");
         Task task1 = new Task("Task 1", Status.NEW, "Таск номер один", 10, LocalDateTime.now());
         final int taskId1 = taskManager.createTask(task1);
@@ -313,7 +315,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Удаление подзадачи по идентификатору")
     @Test
-    void shouldDeleteSubtaskById() throws ManagerSaveException {
+    void shouldDeleteSubtaskById() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getSubtasks().isEmpty(), "Список не пуст");
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
         final int epicId = taskManager.createEpic(epic);
@@ -330,7 +332,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Удаление эпика по идентификатору")
     @Test
-    void shouldDeleteEpicById() throws ManagerSaveException {
+    void shouldDeleteEpicById() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getEpics().isEmpty(), "Список не пуст");
         Epic epic = new Epic("EpicTest", Status.NEW, "Epic create test", 10, LocalDateTime.now(), null);
         final int epicId = taskManager.createEpic(epic);
@@ -350,7 +352,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Очистка списка задач, удаление из истории и из списка сортировки")
     @Test
-    void shouldClearAllTasks() throws ManagerSaveException {
+    void shouldClearAllTasks() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getTasks().isEmpty(), "Список не пуст");
         init();
         List<Task> tasksList = taskManager.getTasks();
@@ -363,7 +365,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Очистка списка подзадач")
     @Test
-    void shouldClearAllSubtasks() throws ManagerSaveException {
+    void shouldClearAllSubtasks() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getSubtasks().isEmpty(), "Список не пуст");
         init();
         List<Subtask> subtaskList = taskManager.getSubtasks();
@@ -376,7 +378,7 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Очистка списка эпиков")
     @Test
-    void shouldClearAllEpics() throws ManagerSaveException {
+    void shouldClearAllEpics() throws IOException, ManagerSaveException {
         assertTrue(taskManager.getEpics().isEmpty(), "Список не пуст");
         init();
         List<Subtask> subtaskList = taskManager.getSubtasks();
@@ -390,14 +392,14 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @DisplayName("Получение истории")
     @Test
-    void shouldReturnHistory(){
+    void shouldReturnHistory() throws IOException {
         //тут всегда пустая история
         assertEquals(Collections.emptyList(), taskManager.getHistory(), "История должна быть пустой");
     }
 
     @DisplayName("Список, возвращающий отсортированные задачи")
     @Test
-    void shouldReturnPrioritizedTasks() throws ManagerSaveException {
+    void shouldReturnPrioritizedTasks() throws ManagerSaveException, IOException {
         assertTrue(taskManager.getPrioritizedTasks().isEmpty(), "Список не пуст");
         init();
 

@@ -10,6 +10,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -19,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
     @BeforeEach
-    public void beforeEach() throws ManagerSaveException {
+    public void beforeEach() {
         File file = new File("src/resources/file.csv");
         taskManager = new FileBackedTasksManager(file);
     }
 
     @DisplayName("Проверка метода сохранения")
     @Test
-    void shouldSaveTasksInFile() throws ManagerSaveException {
+    void shouldSaveTasksInFile() throws IOException, ManagerSaveException {
 
         File file = new File("src/resources/file.csv");
         taskManager = new FileBackedTasksManager(file);
@@ -59,7 +60,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
 
     @DisplayName("Загрузка из файла")
     @Test
-    void shouldLoadTasksFromFile() throws ManagerSaveException {
+    void shouldLoadTasksFromFile() throws IOException, ManagerSaveException {
 
         File file = new File("src/resources/file.csv");
         taskManager = new FileBackedTasksManager(file);
